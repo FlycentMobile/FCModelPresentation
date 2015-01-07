@@ -196,20 +196,20 @@
 - (void)runDefaultAnimationForPresentCompleted:(void (^)(void))completion
 {
     UIView *builtinView = self.builtinViewController.view;
-    CATransform3D transform = CATransform3DScale(CATransform3DIdentity, 0.1, 0.1, 1);
+    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
     
-    builtinView.layer.transform = transform;
+    builtinView.transform = transform;
     [UIView animateWithDuration:0.09 animations:^{
-        CATransform3D transformLarge = CATransform3DScale(CATransform3DIdentity, 1.1, 1.1, 1);
-        builtinView.layer.transform = transformLarge;
+        CGAffineTransform transformLarge = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+        builtinView.transform = transformLarge;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.08 animations:^{
-            CATransform3D transformSmall = CATransform3DScale(CATransform3DIdentity, 0.9, 0.9, 1);
-            builtinView.layer.transform = transformSmall;
+            CGAffineTransform transformSmall = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
+            builtinView.transform = transformSmall;
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.08 animations:^{
-                CATransform3D transformReverse = CATransform3DScale(CATransform3DIdentity, 1, 1, 1);
-                builtinView.layer.transform = transformReverse;
+                CGAffineTransform transformReverse = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
+                builtinView.transform = transformReverse;
             } completion:^(BOOL finished) {
                 if (completion) {
                     completion();
@@ -224,12 +224,12 @@
     UIView *builtinView = self.builtinViewController.view;
     
     [UIView animateWithDuration:0.05 animations:^{
-        CATransform3D transformLarge = CATransform3DScale(CATransform3DIdentity, 1.1, 1.1, 1);
-        builtinView.layer.transform = transformLarge;
+        CGAffineTransform transformLarge = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+        builtinView.transform = transformLarge;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2 animations:^{
-            CATransform3D transformSmall = CATransform3DScale(CATransform3DIdentity, 0.1, 0.1, 1);
-            builtinView.layer.transform = transformSmall;
+            CGAffineTransform transformSmall = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
+            builtinView.transform = transformSmall;
         } completion:^(BOOL finished) {
             if (completion) {
                 completion();
