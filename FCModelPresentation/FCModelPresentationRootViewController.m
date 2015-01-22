@@ -17,6 +17,11 @@
 @property (strong, nonatomic) UIView *backgroundView;
 
 /**
+ *  是否正在呈现，此时如果触发键盘事件则调整UI不执行动画
+ */
+@property (assign, nonatomic) BOOL isPresenting;
+
+/**
  *  键盘事件需要的参数
  */
 @property (strong, nonatomic) NSLayoutConstraint *builtinCenterX;
@@ -51,7 +56,8 @@
     // built in
     [self addChildViewController:self.builtinViewController];
     [self.view addSubview:self.builtinViewController.view];
-    self.builtinViewController.view.layer.cornerRadius = 8;
+//    self.builtinViewController.view.layer.cornerRadius = 8;
+    self.builtinViewController.view.clipsToBounds = YES;
     
     NSArray *constraints = [self.builtinViewController.view autoCenterInSuperview];
     
@@ -73,13 +79,11 @@
 {
     [super viewWillAppear:animated];
     
-    self.builtinSize = CGSizeMake(540, 620);
-    if ([self.builtinViewController respondsToSelector:@selector(fc_modelPresentationSize)]) {
-        self.builtinSize = [self.builtinViewController fc_modelPresentationSize];
-    }
+    self.builtinSize = self.builtinViewController.fc_modelPresentationSize;
+    
     [self.builtinViewController.view autoSetDimensionsToSize:self.builtinSize];
-
-    [self presentAnimated:YES completion:self.presentationCompletionCallback];
+    
+    [self presentAnimated:self.presentUsingAnimation completion:self.presentationCompletionCallback];
 }
 
 
@@ -103,18 +107,21 @@
 
 - (void)presentAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    self.isPresenting = YES;
+    // 背景渐黑为固定的默认动画，不可修改，默认执行
+    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.500];
+    self.backgroundView.alpha =  0 ;
+    self.builtinViewController.view.alpha = 0.5;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.backgroundView.alpha = 1.0;
+        self.builtinViewController.view.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        self.isPresenting = NO;
+    }];
+    
     // 需要显示动画
     if (animated)
     {
-        // 背景渐黑为固定的默认动画，不可修改
-        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.500];
-        self.backgroundView.alpha =  0 ;
-        self.builtinViewController.view.alpha = 0.5;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.backgroundView.alpha = 1.0;
-            self.builtinViewController.view.alpha = 1.0;
-        } completion:nil];
-
         BOOL shouldUseCustomPresentAnimation = NO;
         // 实现自定动画时执行自定义动画
         if ([self.builtinViewController respondsToSelector:@selector(fc_runModelPresentAnimation)])
@@ -149,14 +156,15 @@
 
 - (void)dismissAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    // 背景渐白为固定的默认动画，不可修改
+    [UIView animateWithDuration:0.25 animations:^{
+        self.backgroundView.alpha = 0.0;
+        self.builtinViewController.view.alpha = 0.0;
+    } completion:nil];
+    
+
     if (animated)
     {
-        // 背景渐白为固定的默认动画，不可修改
-        [UIView animateWithDuration:0.25 animations:^{
-            self.backgroundView.alpha = 0.0;
-            self.builtinViewController.view.alpha = 0.0;
-        } completion:nil];
-        
         BOOL shouldUseCustomAnimation = NO;
         // 实现自定动画时执行自定义动画
         if ([self.builtinViewController respondsToSelector:@selector(fc_runModelDismissAnimation)])
@@ -196,26 +204,16 @@
 - (void)runDefaultAnimationForPresentCompleted:(void (^)(void))completion
 {
     UIView *builtinView = self.builtinViewController.view;
-    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
+    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.2, 0.2);
     
     builtinView.transform = transform;
-    [UIView animateWithDuration:0.09 animations:^{
-        CGAffineTransform transformLarge = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+    [UIView animateWithDuration:0.15 animations:^{
+        CGAffineTransform transformLarge = CGAffineTransformScale(CGAffineTransformIdentity, 1.0, 1.0);
         builtinView.transform = transformLarge;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.08 animations:^{
-            CGAffineTransform transformSmall = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
-            builtinView.transform = transformSmall;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.08 animations:^{
-                CGAffineTransform transformReverse = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
-                builtinView.transform = transformReverse;
-            } completion:^(BOOL finished) {
-                if (completion) {
-                    completion();
-                }
-            }];
-        }];
+        if (completion) {
+            completion();
+        }
     }];
 }
 
@@ -223,18 +221,13 @@
 {
     UIView *builtinView = self.builtinViewController.view;
     
-    [UIView animateWithDuration:0.05 animations:^{
-        CGAffineTransform transformLarge = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
-        builtinView.transform = transformLarge;
+    [UIView animateWithDuration:0.15 animations:^{
+        CGAffineTransform transformSmall = CGAffineTransformScale(CGAffineTransformIdentity, 0.2, 0.2);
+        builtinView.transform = transformSmall;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.2 animations:^{
-            CGAffineTransform transformSmall = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
-            builtinView.transform = transformSmall;
-        } completion:^(BOOL finished) {
-            if (completion) {
-                completion();
-            }
-        }];
+        if (completion) {
+            completion();
+        }
     }];
 }
 
@@ -248,10 +241,6 @@
     
     // 结束时的Frame
     CGRect endFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    // 动画时间和选项
-    NSTimeInterval animateDuration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    int animateOption = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-    
     // 计算剩余高度
     CGFloat restHeight = self.view.bounds.size.height - endFrame.size.height - 20;
     CGFloat oldCenter = self.view.bounds.size.height / 2;
@@ -264,6 +253,16 @@
     else {
         newCenter = restHeight / 2 + 20;
     }
+    
+    // 动画时间和选项
+    NSTimeInterval animateDuration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    int animateOption = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+    // 正在呈现时显示键盘，则直接调整到位，不执行动画
+    if (self.isPresenting) {
+        self.builtinCenterY.constant = newCenter - oldCenter;
+        return;
+    }
+    
     [UIView animateWithDuration:animateDuration delay:0 options:animateOption animations:^{
         self.builtinCenterY.constant = newCenter - oldCenter;
         [self.view layoutIfNeeded];

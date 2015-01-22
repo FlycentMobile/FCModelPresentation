@@ -11,13 +11,6 @@
 @protocol FCModelPresentationProtocol <NSObject>
 @optional
 /**
- *  视图界面的尺寸大小，默认与系统FormSheet相同（540，600）
- *
- *  @attention 只会在初始化时访问一次该方法
- */
-- (CGSize)fc_modelPresentationSize;
-
-/**
  *  是否可以通过点击外围的背景关闭,默认为YES
  *  实现该方法后会在每次点击外围背景时询问
  *
@@ -66,12 +59,18 @@
 /**
  *  显示符合FCModelPresentationProtocol标准的FormSheet风格Model界面
  */
-- (void)fc_modelPresentViewController:(UIViewController<FCModelPresentationProtocol>*)controller animated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)fc_modelPresentViewController:(UIViewController*)controller animated:(BOOL)animated completion:(void (^)(void))completion;
 
 /**
  *  关闭FCModel的界面
  */
 - (void)fc_dismissModelViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion;
+
+/**
+ *  视图界面的尺寸大小，默认与系统FormSheet相同（540，600）
+ *  @attention 只会在初始化时访问一次该属性
+ */
+@property (assign, nonatomic) CGSize fc_modelPresentationSize;
 
 @end
 

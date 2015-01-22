@@ -8,8 +8,23 @@
 
 #import "UIViewController+FCModelPresentation.h"
 #import "FCModelPresentationCenter.h"
+#import <objc/runtime.h>
 
 @implementation UIViewController (FCModelPresentation)
+
+- (CGSize)fc_modelPresentationSize
+{
+    NSValue *value = objc_getAssociatedObject(self, @selector(fc_modelPresentationSize));
+    if (!value) {
+        return self.view.frame.size;
+    }
+    return [value CGSizeValue];
+}
+
+- (void)setFc_modelPresentationSize:(CGSize)fc_modelPresentationSize
+{
+    objc_setAssociatedObject(self, @selector(fc_modelPresentationSize), [NSValue valueWithCGSize:fc_modelPresentationSize], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (void)fc_modelPresentViewController:(UIViewController*)controller animated:(BOOL)animated completion:(void (^)(void))completion
 {
@@ -36,3 +51,4 @@
 }
 
 @end
+

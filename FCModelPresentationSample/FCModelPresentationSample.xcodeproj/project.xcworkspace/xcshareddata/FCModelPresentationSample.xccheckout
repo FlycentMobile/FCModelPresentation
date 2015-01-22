@@ -10,15 +10,19 @@
 	<string>FCModelPresentationSample</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>4E1C7DA1A40B9FE7443BF7E107D6EE8E47BDF07A</key>
+		<string>https://github.com/FlycentMobile/FCModelPresentation.git</string>
 		<key>b1258010-c6e2-2443-904c-1386b8600262++505</key>
 		<string>https://222.92.69.228/svn/FCIOS/trunk</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>FCModelPresentation/FCModelPresentationSample/FCModelPresentationSample.xcodeproj</string>
+	<string>FCModelPresentationSample/FCModelPresentationSample.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>4E1C7DA1A40B9FE7443BF7E107D6EE8E47BDF07A</key>
+		<string>../../..</string>
 		<key>b1258010-c6e2-2443-904c-1386b8600262++505</key>
-		<string>../../../..</string>
+		<string>../../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>
@@ -26,11 +30,11 @@
 		<string>https://222.92.69.228/svn/FCIOS</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://222.92.69.228/svn/FCIOS/trunk/FCModelPresentation/FCModelPresentationSample/FCModelPresentationSample.xcodeproj</string>
+	<string>https://github.com/FlycentMobile/FCModelPresentation.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>b1258010-c6e2-2443-904c-1386b8600262++505</string>
+	<string>4E1C7DA1A40B9FE7443BF7E107D6EE8E47BDF07A</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -39,7 +43,15 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>b1258010-c6e2-2443-904c-1386b8600262++505</string>
 			<key>IDESourceControlWCCName</key>
-			<string>FCIOS</string>
+			<string>..</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4E1C7DA1A40B9FE7443BF7E107D6EE8E47BDF07A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FCModelPresentation</string>
 		</dict>
 	</array>
 </dict>

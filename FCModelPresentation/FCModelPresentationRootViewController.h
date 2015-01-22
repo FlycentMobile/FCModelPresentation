@@ -17,6 +17,11 @@
 - (instancetype)initWithBuiltinViewController:(UIViewController<FCModelPresentationProtocol>*)controller;
 
 /**
+ *  呈现时是否使用动画
+ */
+@property (assign, nonatomic) BOOL presentUsingAnimation;
+
+/**
  *  显示动画完毕后的回调
  */
 @property (copy, nonatomic) void(^presentationCompletionCallback)(void);

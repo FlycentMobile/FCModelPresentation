@@ -52,6 +52,7 @@
     
     FCModelPresentationRootViewController *controller = [[FCModelPresentationRootViewController alloc] initWithBuiltinViewController:viewControllerToPresent];
     controller.presentationCompletionCallback = completion;
+    controller.presentUsingAnimation = flag;
     window.rootViewController = controller;
     
     [window makeKeyAndVisible];
